@@ -1,7 +1,9 @@
-package com.springmongodb.exemplemongodb.resources;
+package com.springmongodb.exemplemongodb.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.springmongodb.exemplemongodb.dto.UserDTO;
 import com.springmongodb.exemplemongodb.entities.User;
 import com.springmongodb.exemplemongodb.services.UserService;
 
@@ -13,15 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value="/users")
-public class UserResource {
+public class UserController {
 
     @Autowired
     private UserService service;
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll(){      
+    public ResponseEntity<List<UserDTO>> findAll(){      
         List<User> list = service.findAll();
+        List<UserDTO> listDto = list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
         
-        return ResponseEntity.ok().body(list);
+        return ResponseEntity.ok().body(listDto);
     }
 }
