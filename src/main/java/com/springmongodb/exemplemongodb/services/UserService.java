@@ -3,8 +3,6 @@ package com.springmongodb.exemplemongodb.services;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
 import com.springmongodb.exemplemongodb.dto.UserDTO;
 import com.springmongodb.exemplemongodb.entities.User;
 import com.springmongodb.exemplemongodb.repository.UserRepository;
@@ -27,14 +25,18 @@ public class UserService {
         Optional<User> obj = repository.findById(id);
         return obj.orElseThrow(() -> new NotFoundObj("Objeto não encontrado!"));
     }
-
-    @Transactional
+    
     public User insert(User obj){
         return repository.insert(obj);
     }
 
     public User fromDto(UserDTO dto){
         return  new User(dto.getId(), dto.getName(), dto.getEmail());
+    }
+
+    public void delete(String id){
+        User obj = findById(id);        
+        repository.delete(obj);        
     }
 
 }
