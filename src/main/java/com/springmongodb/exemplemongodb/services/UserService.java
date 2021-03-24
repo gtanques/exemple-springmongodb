@@ -21,22 +21,33 @@ public class UserService {
         return repository.findAll();
     }
 
-    public User findById(String id){
+    public User findById(String id) {
         Optional<User> obj = repository.findById(id);
         return obj.orElseThrow(() -> new NotFoundObj("Objeto não encontrado!"));
     }
-    
-    public User insert(User obj){
+
+    public User insert(User obj) {
         return repository.insert(obj);
     }
 
-    public User fromDto(UserDTO dto){
-        return  new User(dto.getId(), dto.getName(), dto.getEmail());
+    public User fromDto(UserDTO dto) {
+        return new User(dto.getId(), dto.getName(), dto.getEmail());
     }
 
-    public void delete(String id){
-        User obj = findById(id);        
-        repository.delete(obj);        
+    public User update(User obj) {
+        User newObj = findById(obj.getId());
+        updateData(newObj, obj);
+        return repository.save(newObj);
+    }
+
+    private void updateData(User newObj, User obj) {
+        newObj.setName(obj.getName());
+        newObj.setEmail(obj.getEmail());
+    }
+
+    public void delete(String id) {
+        User obj = findById(id);
+        repository.delete(obj);
     }
 
 }
