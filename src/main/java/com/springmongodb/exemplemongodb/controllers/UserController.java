@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.springmongodb.exemplemongodb.dto.UserDTO;
+import com.springmongodb.exemplemongodb.entities.Post;
 import com.springmongodb.exemplemongodb.entities.User;
 import com.springmongodb.exemplemongodb.services.UserService;
 
@@ -39,6 +40,12 @@ public class UserController {
     public ResponseEntity<UserDTO> findById(@PathVariable String id) {
         User obj = service.findById(id);
         return ResponseEntity.ok().body(new UserDTO(obj));
+    }
+
+    @GetMapping(value = "/{id}/posts")
+    public ResponseEntity<List<Post>> findPost(@PathVariable String id) {
+        User obj = service.findById(id);
+        return ResponseEntity.ok().body(obj.getPosts());
     }
 
     @PostMapping
